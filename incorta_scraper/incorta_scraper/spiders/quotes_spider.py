@@ -11,6 +11,12 @@ class QuotesSpider(scrapy.Spider):
     def parse(self, response):
         page = response.url.split("/")[-2]
         filename = 'incorta-%s.html' % page
+        #-------------------------
+        #to add each page to an html file 
+        #with open(filename, 'wb') as f:
+            #f.write(response.body)
+        #------------------------------
+        #-------- appending all to 1 file while using beautiful soap------
         txt=response.body
         self.gettext(txt)
 
