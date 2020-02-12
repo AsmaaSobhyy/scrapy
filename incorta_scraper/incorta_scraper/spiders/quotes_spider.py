@@ -1,6 +1,6 @@
 import scrapy
 from bs4 import BeautifulSoup
-
+import pdfkit
 
 class QuotesSpider(scrapy.Spider):
     name = "incorta"
@@ -27,12 +27,18 @@ class QuotesSpider(scrapy.Spider):
 
     def gettext(self,html_doc):
         soup = BeautifulSoup(html_doc, 'html.parser')
+
         txt=soup.get_text()
         filename = 'incorta.txt'
         with open(filename, 'a+') as f:
             f.write(txt)
 
 
+    def get_important_content(self, html_doc):
+        with open(html_doc) as f:
+            soup = BeautifulSoup(f.read(), 'html.parser')
+            important_div = soup.findAll("div", {"class": ['col-md-9', 'col-lg-10', 'border-left', 'pl-4']})[0]
+            pdfkit.from_string(str(important_div), '{}.pdf'.format(html_doc))
 
 
 
